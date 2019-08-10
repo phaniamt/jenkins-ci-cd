@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-master-svc
+  labels:
+    app: jenkins-master
+  namespace: dev
+spec:
+#  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 50000
+    targetPort: 50000
+    protocol: TCP
+    name: slave
+  selector:
+    app: jenkins-master
+#  clusterIP: None
