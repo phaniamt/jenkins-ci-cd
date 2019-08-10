@@ -47,22 +47,22 @@ spec:
 #            memory: "3072Mi"
 #            cpu: "2.0"
         readinessProbe:
-#          tcpSocket:
-          httpGet:
-            path: /
+          tcpSocket:
+#          httpGet:
+#            path: /
             port: 8080
           initialDelaySeconds: 30
-          timeoutSeconds: 1
+          timeoutSeconds: 2
           periodSeconds: 5
           successThreshold: 1
         livenessProbe:
-#          tcpSocket:
-          httpGet:
-            path: /
+          tcpSocket:
+#          httpGet:
+#            path: /
             port: 8080
           initialDelaySeconds: 30
-          timeoutSeconds: 1
-          periodSeconds: 2
+          timeoutSeconds: 2
+          periodSeconds: 5
           failureThreshold: 3
       volumes:
       - name: docker-sock-volume
