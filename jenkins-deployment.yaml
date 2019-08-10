@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-deployment
+  labels:
+    app: jenkins-master
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-master
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 30
+  template:
+    metadata:
+      labels:
+        app: jenkins-master
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 0
+      serviceAccountName: jenkins
+      containers:
+      - name: jenkins-master
+#        image: phanikumary1995/jenkins-oracle-jdk8
+        image: phanikumary1995/jenkins-eks
+        ports:
+        - name: http-port
+          containerPort: 8080
+        - name: jnlp-port
+          containerPort: 50000
+        volumeMounts:
+        - name: persistent-storage
+          mountPath: /var/jenkins_home
+        - name: docker-sock-volume
+          mountPath: /var/run/docker.sock
+#        resources:
+#          requests:
+#            memory: "2048Mi"
+#            cpu: "1.0"
+#          limits:
+#            memory: "3072Mi"
+#            cpu: "2.0"
+        readinessProbe:
+#          tcpSocket:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 5
+          successThreshold: 1
+        livenessProbe:
+#          tcpSocket:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+          periodSeconds: 2
+          failureThreshold: 3
+      volumes:
+      - name: docker-sock-volume
+        hostPath:
+          path: /var/run/docker.sock
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: jenkins-claim
+#      nodeSelector:
+#        server: node1
