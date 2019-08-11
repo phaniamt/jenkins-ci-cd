@@ -18,7 +18,7 @@
     kubectl config current-context
 
 
-# if you face docker build host reslove issue login into EC2 enable the docker bridge
+# if you face docker build host reslove issue login into EC2 enable the docker bridge otherwise follow the docker-deamon-bridge-enable.yaml add the bootstrap commands while creating the nodes
 
 vi /etc/docker/daemon.json
 
@@ -32,3 +32,7 @@ vi /etc/docker/daemon.json
           "live-restore": false,
           "max-concurrent-downloads": 10
         }
+        
+service docker restart
+
+systemctl daemon-reload
