@@ -16,3 +16,19 @@
     kubectl config use-context dev
 
     kubectl config current-context
+
+
+# if you face docker build host reslove issue login into EC2 enable the docker bridge
+
+vi /etc/docker/daemon.json
+
+        {
+          "bridge": "docker0",
+          "log-driver": "json-file",
+          "log-opts": {
+            "max-size": "10m",
+            "max-file": "10"
+          },
+          "live-restore": false,
+          "max-concurrent-downloads": 10
+        }
