@@ -20,6 +20,10 @@
 
 # if you face docker build host reslove issue login into EC2 enable the docker bridge otherwise follow the docker-deamon-bridge-enable.yaml add the bootstrap commands while creating the nodes
 
+# Ref 
+
+https://gist.github.com/tobemedia/2144d74d232ccce8972613e8ae13b054
+
 vi /etc/docker/daemon.json
 
         {
