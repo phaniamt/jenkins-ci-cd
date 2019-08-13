@@ -23,8 +23,10 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
-        runAsUser: 0
+        runAsUser: 1000
       serviceAccountName: jenkins
+      hostname: jenkins
+      terminationGracePeriodSeconds: 60
       containers:
       - name: jenkins-master
 #        image: phanikumary1995/jenkins-oracle-jdk8
@@ -33,7 +35,7 @@ spec:
         - name: http-port
           containerPort: 8080
         - name: jnlp-port
-          containerPort: 50000
+          containerPort: 5000
         volumeMounts:
         - name: persistent-storage
           mountPath: /var/jenkins_home
@@ -42,23 +44,23 @@ spec:
 #        resources:
 #          requests:
 #            memory: "2048Mi"
-#            cpu: "1.0"
+#            cpu: "1000m"
 #          limits:
 #            memory: "3072Mi"
-#            cpu: "2.0"
+#            cpu: "1500m"
         readinessProbe:
-          tcpSocket:
-#          httpGet:
-#            path: /
+#          tcpSocket:
+          httpGet:
+            path: /login
             port: 8080
           initialDelaySeconds: 30
           timeoutSeconds: 2
           periodSeconds: 5
           successThreshold: 1
         livenessProbe:
-          tcpSocket:
-#          httpGet:
-#            path: /
+#          tcpSocket:
+          httpGet:
+            path: /login
             port: 8080
           initialDelaySeconds: 30
           timeoutSeconds: 2
