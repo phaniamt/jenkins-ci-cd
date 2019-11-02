@@ -46,5 +46,6 @@ RUN set -ex \
     && ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
     && ln -s /opt/yarn/bin/yarnpkg /usr/local/bin/yarnpkg \
     && cd /
-RUN usermod -a -G docker jenkins
+RUN usermod -aG docker jenkins
+RUN groupadd -g 994 eks-docker &&  usermod -aG 994 jenkins
 USER jenkins
