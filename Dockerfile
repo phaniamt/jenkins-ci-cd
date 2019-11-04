@@ -48,4 +48,5 @@ RUN set -ex \
     && cd /
 RUN usermod -aG docker jenkins
 RUN groupadd -g 994 eks-docker &&  usermod -aG 994 jenkins
+RUN apt-get update && apt-get install gettext -y
 USER jenkins
